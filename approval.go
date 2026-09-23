@@ -113,7 +113,6 @@ func (a *approvalEnvironment) createApprovalIssue(ctx context.Context) error {
 		&github.IssueRequest{
 			Title:     &issueTitle,
 			Body:      &issueBody,
-			Assignees: &a.issueApprovers,
 			Labels:    &a.issueLabels,
 		},
 	)
