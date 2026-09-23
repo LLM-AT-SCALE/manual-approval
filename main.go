@@ -72,16 +72,6 @@ func newCommentLoopChannel(ctx context.Context, apprv *approvalEnvironment, clie
 			switch approved {
 			case approvalStatusApproved:
 				newState := "closed"
-				closeComment := fmt.Sprintf("The required number of approvals (%d) has been met; continuing workflow and closing this issue.", apprv.minimumApprovals)
-				_, _, err := client.Issues.CreateComment(ctx, apprv.targetRepoOwner, apprv.targetRepoName, apprv.approvalIssueNumber, &github.IssueComment{
-					Body: &closeComment,
-				})
-				if err != nil {
-					fmt.Printf("error commenting on issue: %v\n", err)
-					channel <- 1
-					close(channel)
-					return
-				}
 				if err = patchIssueState(ctx, client, apprv.targetRepoOwner, apprv.targetRepoName, apprv.approvalIssueNumber, newState); err != nil {
 					fmt.Printf("error closing issue: %v\n", err)
 					channel <- 1
